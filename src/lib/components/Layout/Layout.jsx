@@ -52,13 +52,17 @@ export default class Layout extends React.Component {
   static calculateLayout(props) {
     let initialLayout = [];
     let initialOrdering = [];
+    let initialCollapsedPanels = [];     
     let totalFixedWidth = 0;
     let totalFixedHeight = 0;
     let totalSpacerSize = 0;
     React.Children.map(props.children, (c, index) => {
       const { id } = c && c.props;
       if (id === "panel") {
+
         initialOrdering.push(index);
+        if (c.props.collapsed)
+          initialCollapsedPanels.push(index);
         if (c.props.fixed) {
           initialLayout.push(0);
           if (c.props.fixedWidth) {
@@ -76,6 +80,7 @@ export default class Layout extends React.Component {
     return {
       layout: initialLayout,
       layoutOrdering: initialOrdering,
+      collapsedPanels: initialCollapsedPanels 
       totalFixedWidth,
       totalFixedHeight,
       totalSpacerSize
